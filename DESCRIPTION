@@ -1,11 +1,25 @@
 Package: exr
-Type: Package
-Title: What the Package Does (Title Case)
+Title: Quantifying Robustness to External Validity Bias
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Naoki Egami and Martin Devaux
+Maintainer: Naoki Egami <naoki.egami@columbia.edu>
+Description: R package exr estimates  a measure of external robustness (ranges from 0 to 1) by estimating how much different populations should be from the experimental sample to explain away the T-PATE. This package provides the central function exr() and companion functions summary() to summarize results and plot() to visualize results. Please read Devaux and Egami (2022+) (https://naokiegami.com/paper/external_robust.pdf).
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.0
+Depends:
+    R (>= 3.5.0)
+Imports:
+    CVXR,
+    grf,
+    SuperLearner,
+    bartCause,
+    furrr,
+    future,
+    future.apply,
+    progressr
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
