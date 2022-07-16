@@ -98,13 +98,12 @@ sample average treatment effect (SATE).
 ``` r
 # Use LaLonde data as an example
 library(exr)
-library(estimatr)
 data(LaLonde) # to simplify this example, we use the subset of the data (n = 3000)
 
 covariates <- c("age", "educ", "black","hisp", "marr", "nodegr", "log.re75","u75") 
 for_sate <- as.formula(paste0("outcome ~ treat + ", paste(covariates, collapse = "+")))
 
-lm_sate <- lm_robust(for_sate, data = LaLonde)
+lm_sate <- estimatr::lm_robust(for_sate, data = LaLonde)
 sate_est <- summary(lm_sate)$coef["treat", c(1,2)]
 sate_est
 ```
