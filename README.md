@@ -103,13 +103,13 @@ data(LaLonde) # to simplify this example, we use the subset of the data (n = 300
 covariates <- c("age", "educ", "black","hisp", "marr", "nodegr", "log.re75","u75") 
 for_sate <- as.formula(paste0("outcome ~ treat + ", paste(covariates, collapse = "+")))
 
-lm_sate <- estimatr::lm_robust(for_sate, data = LaLonde)
+lm_sate <- lm(for_sate, data = LaLonde)
 sate_est <- summary(lm_sate)$coef["treat", c(1,2)]
 sate_est
 ```
 
     ##   Estimate Std. Error 
-    ## 0.06965018 0.03559064
+    ## 0.06965018 0.03563844
 
 ### Estimate External Robustness
 
@@ -173,8 +173,8 @@ summary(exr_out)
     ## External Robustness: 0.41
     ## -------------------------
     ## 
-    ##  Method    Estimate   With CI 
-    ##     grf   0.4103921 *       0 
+    ##  Method    Estimate        With CI 
+    ##     grf   0.4103921 * 1.110223e-16 
     ## ---
     ## Note: 0 ' ' 0.14 (Probability Surveys) '*' 0.57 (MTurk Samples) '**' 1
 
