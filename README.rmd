@@ -1,0 +1,104 @@
+---
+title: "exr: Quantifying Robustness to External Validity Bias"
+output: 
+  md_document:
+    variant: markdown_github
+---
+
+# exr: Quantifying Robustness to External Validity Bias
+
+**Description:** 
+
+R package `exr` estimates robustness of experimental results to external validity bias. Please read Devaux and Egami (2022+) for details about the proposed method. 
+
+**Authors:** 
+
+- [Naoki Egami](https://naokiegami.com) (Maintainer)
+- [Martin Devaux](https://polisci.columbia.edu/content/martin-samuel-devaux)
+
+**Reference:** 
+ 
+  - Devaux and Egami. (2022+). [Quantifying Robustness to External Validity Bias.](https://naokiegami.com/paper/external_robust.pdf) (Working Paper).
+
+**Overview:** 
+
+External validity of experimental results is essential in the social sciences. Existing methods for external validity estimate causal effects in a target population, called the target population average treatment effect (T-PATE). However, these methods are sometimes difficult to implement either because it is infeasible to obtain data for the target population or because there is no target population that analysts and skeptics can agree on. Devaux and Egami (2022+) consider a different goal --- quantifying how robust an experiment is to external validity bias. In particular, Devaux and Egami (2022+) propose a measure of *external robustness* by estimating how much different populations should be from the experimental sample to explain away the T-PATE. This R package `exr` allows users to estimate external robustness. 
+
+The three advantages of the proposed approach are as follows. 
+
+(1) Unlike the standard generalization approach, estimation of external robustness only requires experimental data and does not require any population data. In practice, researchers can estimate external robustness in any experimental study without collecting additional data. 
+
+(2) We prove that the proposed estimator is consistent to the true external robustness under common generalization assumptions and, more importantly, has simple interpretation even when those assumptions are violated. 
+
+(3) We provide simple default benchmarks to help interpret the degree of external robustness in each application.
+
+## Practical Guides
+
+* **Step 1**: Users specify `covariates` that are important for treatment effect heterogeneity. Importantly, researchers can use all covariates measured in the experimental data.
+
+* **Step 2**: Users can run `exr()` to estimate external robustness as a measure between 0 and 1. 
+
+* **Step 3**: Users can run `summary()` to summarize results. `summary()` displays benchmarks (0.14 and 0.57) to help substantively interpret the degree of estimated external robustness. Users can visualize the distribution of CATEs and estimated external robustness using `plot()`.
+
+## Installation Instructions
+You can install the most recent development version using the `devtools` package. First you have to install `devtools` using the following code. Note that you only have to do this once:
+```{r eval=FALSE} 
+if(!require(devtools)) install.packages("devtools")
+```   
+
+Then, load `devtools` and use the function `install_github()` to install `exr`:
+```{r eval=FALSE}
+library(devtools)
+install_github("naoki-egami/exr", dependencies = TRUE)
+```  
+
+## Get Started 
+Here, we provide an example to illustrate the use of function `exr()`.
+
+### First Estimate the SATE. 
+Researchers can first use their favoriate approach to estimate the sample average treatment effect (SATE). 
+
+```{r eval = TRUE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+# Use LaLonde data as an example
+library(exr)
+library(estimatr)
+data(LaLonde) # to simplify this example, we use the subset of the data (n = 3000)
+
+covariates <- c("age", "educ", "black","hisp", "marr", "nodegr", "log.re75","u75") 
+for_sate <- as.formula(paste0("outcome ~ treat + ", paste(covariates, collapse = "+")))
+
+lm_sate <- lm_robust(for_sate, data = LaLonde)
+sate_est <- summary(lm_sate)$coef["treat", c(1,2)]
+sate_est
+```
+
+### Estimate External Robustness
+Then, researchers can use `exr()` to estimate external robustness. In most scenarios, users only need to specify the following 5 arguments. We describe other optinal arguments in the package [manual](https://github.com/naoki-egami/exr/blob/master/manual/exr_0.1.0.pdf).  
+
+| Argument | Description              |
+|:-------- | :------------------------|
+|`outcome` | A variable name in the data that corresponds to the outcome variable.|
+|`treatment` | A variable name in the data that corresponds to the treatment variable. The treatment variable needs to be binary (i.e., contains two levels). If users are interested in categorical treatments (e.g., control, treatment 1, and treatment 2), they can estimate external robustness by running `exr()` twice; using treatment 1 and treatment 2, respectively.|
+|`covariates` | A vector. Variable names in the data that correspond to covariates users adjust for.|
+| `data`    | A data frame. The class should be `data.frame`. |
+| `sate_estimate` | A vector of length 2. A point estimate of the SATE and its standard error. Default is `NULL`. When `sate_estimate = NULL`, the package internally estimates the SATE using a linear regression of the outcome on the treatment and all specified covariates.| 
+
+```{r eval = TRUE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE}
+exr_out <- exr(outcome = "outcome", 
+               treatment = "treat", 
+               covariates = c("age", "educ", "black","hisp", "marr", "nodegr", "log.re75","u75"), 
+               data = LaLonde,
+               sate_estimate = sate_est) 
+summary(exr_out)
+```
+
+Use `plot` to visualize the estimated CATEs and estimated external robustness.
+```{r eval = TRUE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align="center"}
+plot(exr_out)
+```
+
+When `uncertainty = TRUE`, we visualize the distribution of CATEs that are shifted based on an adjusted threshold. For example, suppose the SATE is positive and we consider the 95% confidence interval. Then, the adjusted threshold is 1.96 x Standard Error. Therefore, we visualize the distribution of CATEs - 1.96 x Standard Error. 
+
+```{r eval = TRUE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align="center"}
+plot(exr_out, uncertainty = TRUE)
+```
