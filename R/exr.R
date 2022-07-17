@@ -68,6 +68,9 @@ exr <- function(outcome, treatment, covariates,
   dual <- TRUE
   cut <- -0.01
 
+  # data.frame
+  class(data) <- "data.frame"
+
   # Check Treatment Variables
   if(length(unique(data[, treatment])) != 2){
     stop(" 'treatment' variable needs to be binary (i.e., contains two levels). If users are interested in categorical treatments, they can consider each level separately. ")
@@ -101,7 +104,6 @@ exr <- function(outcome, treatment, covariates,
   }
 
   # clean data
-  class(data) <- "data.frame"
   data <- data[, c(outcome, treatment, covariates, cate_name)]
   for(j in 1:ncol(data)){
     if("factor" %in% class(data[,j])){
