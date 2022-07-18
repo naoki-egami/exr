@@ -96,9 +96,8 @@ Researchers can first use their favoriate approach to estimate the
 sample average treatment effect (SATE).
 
 ``` r
-# Use LaLonde data as an example
 library(exr)
-data(LaLonde) # to simplify this example, we use the subset of the data (n = 3000)
+data(LaLonde) # Use LaLonde data as an example
 
 covariates <- c("age", "educ", "black","hisp", "marr", "nodegr", "log.re75","u75") 
 for_sate <- as.formula(paste0("outcome ~ treat + ", paste(covariates, collapse = "+")))
