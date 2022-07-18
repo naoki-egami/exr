@@ -169,12 +169,14 @@ summary(exr_out)
 ```
 
     ## 
+    ## CATE Estimator: grf
+    ## 
     ## -------------------------
-    ## External Robustness: 0.41
+    ## External Robustness: 0.35
     ## -------------------------
     ## 
-    ##  Method    Estimate        With CI 
-    ##     grf   0.4103921 * 1.110223e-16 
+    ##    Estimate   With CI 
+    ##    0.349225 *       0 
     ## ---
     ## Note: 0 ' ' 0.14 (Probability Surveys) '*' 0.57 (MTurk Samples) '**' 1
 
