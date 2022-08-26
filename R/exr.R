@@ -72,7 +72,7 @@ exr <- function(outcome, treatment, covariates,
   class(data) <- "data.frame"
 
   # Check Treatment Variables
-  if(length(unique(data[, treatment])) != 2){
+  if(length(unique(is.na(data[, treatment]))) != 2){
     stop(" 'treatment' variable needs to be binary (i.e., contains two levels). If users are interested in categorical treatments, they can consider each level separately. ")
   }
 
