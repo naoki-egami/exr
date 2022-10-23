@@ -174,9 +174,8 @@ In this example, external robustness is 0.35 and is moderate (between
 two benchmarks 0.14 and 0.57).
 
 The covariate profiles provide further intuitive understanding. The
-first two columns show the means and standard devariations of covariates
-in the experimental sample. The third and fourth columns show the means
-and standard devariations of covariates in the population with the
+first four columns show the means and standard devariations of
+covariates in the experimental sample and in the population with the
 T-PATE equal to zero. The last column shows the standardized difference
 in means of covariates. If the population with the zero T-PATE has
 similar means of covariates to those of the experimental sample, this
