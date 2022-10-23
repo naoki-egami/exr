@@ -4,10 +4,12 @@
 \alias{summary.exr}
 \title{Summary function}
 \usage{
-\method{summary}{exr}(object, ...)
+\method{summary}{exr}(object, digits = 2, ...)
 }
 \arguments{
 \item{object}{the output from exr()}
+
+\item{digits}{digits used for a table of covariate profiles. Default = 2.}
 
 \item{...}{Other arguments.}
 }

@@ -1,5 +1,4 @@
-exr: Quantifying Robustness to External Validity Bias
-=====================================================
+# exr: Quantifying Robustness to External Validity Bias
 
 **Description:**
 
@@ -50,12 +49,10 @@ The three advantages of the proposed approach are as follows.
 3.  We provide simple default benchmarks to help interpret the degree of
     external robustness in each application.
 
-Practical Guides
-----------------
+## Practical Guides
 
 -   **Step 1**: Users specify `covariates` that are important for
-    treatment effect heterogeneity. Importantly, researchers can use all
-    covariates measured in the experimental data.
+    treatment effect heterogeneity.
 
 -   **Step 2**: Users can run `exr()` to estimate external robustness as
     a measure between 0 and 1.
@@ -63,11 +60,16 @@ Practical Guides
 -   **Step 3**: Users can run `summary()` to summarize results.
     `summary()` displays benchmarks (0.14 and 0.57) to help
     substantively interpret the degree of estimated external robustness.
-    Users can visualize the distribution of CATEs and estimated external
-    robustness using `plot()`.
 
-Installation Instructions
--------------------------
+    -   To provide further understanding of external robustness,
+        researchers can also report covariate profiles of the population
+        for which the T-PATE is equal to zero. `summary()` displays the
+        means and standard deviations of covariates in the experimental
+        sample and the population with the T-PATE equal to zero.
+    -   Users can visualize the distribution of CATEs and estimated
+        external robustness using `plot()`.
+
+## Installation Instructions
 
 You can install the most recent development version using the `devtools`
 package. First you have to install `devtools` using the following code.
@@ -85,8 +87,7 @@ library(devtools)
 install_github("naoki-egami/exr", dependencies = TRUE)
 ```
 
-Get Started
------------
+## Get Started
 
 Here, we provide an example to illustrate the use of function `exr()`.
 
@@ -117,40 +118,13 @@ most scenarios, users only need to specify the following 5 arguments. We
 describe other optinal arguments in the package
 [manual](https://github.com/naoki-egami/exr/blob/master/manual/exr_0.1.0.pdf).
 
-<table>
-<colgroup>
-<col style="width: 26%" />
-<col style="width: 73%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Argument</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><code>outcome</code></td>
-<td style="text-align: left;">A variable name in the data that corresponds to the outcome variable.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>treatment</code></td>
-<td style="text-align: left;">A variable name in the data that corresponds to the treatment variable. The treatment variable needs to be binary (i.e., contains two levels). If users are interested in categorical treatments (e.g., control, treatment 1, and treatment 2), they can estimate external robustness by running <code>exr()</code> twice; using treatment 1 and treatment 2, respectively.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>covariates</code></td>
-<td style="text-align: left;">A vector. Variable names in the data that correspond to covariates users adjust for.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>data</code></td>
-<td style="text-align: left;">A data frame. The class should be <code>data.frame</code>.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>sate_estimate</code></td>
-<td style="text-align: left;">A vector of length 2. A point estimate of the SATE and its standard error. Default is <code>NULL</code>. When <code>sate_estimate = NULL</code>, the package internally estimates the SATE using a linear regression of the outcome on the treatment and all specified covariates.</td>
-</tr>
-</tbody>
-</table>
+| Argument        | Description                                                                                                                                                                                                                                                                                                                                                      |
+|:-------------------|:---------------------------------------------------|
+| `outcome`       | A variable name in the data that corresponds to the outcome variable.                                                                                                                                                                                                                                                                                            |
+| `treatment`     | A variable name in the data that corresponds to the treatment variable. The treatment variable needs to be binary (i.e., contains two levels). If users are interested in categorical treatments (e.g., control, treatment 1, and treatment 2), they can estimate external robustness by running `exr()` twice; using treatment 1 and treatment 2, respectively. |
+| `covariates`    | A vector. Variable names in the data that correspond to covariates users adjust for.                                                                                                                                                                                                                                                                             |
+| `data`          | A data frame. The class should be `data.frame`.                                                                                                                                                                                                                                                                                                                  |
+| `sate_estimate` | A vector of length 2. A point estimate of the SATE and its standard error. Default is `NULL`. When `sate_estimate = NULL`, the package internally estimates the SATE using a linear regression of the outcome on the treatment and all specified covariates.                                                                                                     |
 
 ``` r
 exr_out <- exr(outcome = "outcome", 
@@ -174,10 +148,47 @@ summary(exr_out)
     ## External Robustness: 0.35
     ## -------------------------
     ## 
-    ##    Estimate   With CI 
-    ##    0.349225 *       0 
+    ##    Estimate   With Uncertainty 
+    ##    0.349225 *                0 
     ## ---
     ## Note: 0 ' ' 0.14 (Probability Surveys) '*' 0.57 (MTurk Samples) '**' 1
+    ## 
+    ## 
+    ## -------------------
+    ## Covariate Profiles:
+    ## -------------------
+    ## 
+    ##          Exp:Mean Exp:SD   Pop*:Mean Pop*:SD   Std. Diff
+    ## age         24.52   6.63       22.99    6.35        0.23
+    ## educ        10.27   1.70        9.81    1.69        0.27
+    ## black1       0.80   0.40        0.79    0.41        0.02
+    ## hisp1        0.11   0.31        0.12    0.32       -0.04
+    ## marr1        0.16   0.37        0.10    0.30        0.16
+    ## nodegr1      0.78   0.41        0.84    0.37       -0.14
+    ## log.re75     4.78   4.01        4.15    4.11        0.16
+    ## u751         0.40   0.49        0.48    0.50       -0.17
+    ## ---
+    ## Note: Exp = Experimental sample. Pop* = Population with the T-PATE equal to zero.
+
+In this example, external robustness is 0.35 and is moderate (between
+two benchmarks 0.14 and 0.57).
+
+The covariate profiles provide further intuitive understanding. The
+first two columns show the means and standard devariations of covariates
+in the experimental sample. The third and fourth columns show the means
+and standard devariations of covariates in the population with the
+T-PATE equal to zero. The last column shows the standardized difference
+in means of covariates. If the population with the zero T-PATE has
+similar means of covariates to those of the experimental sample, this
+shows that the T-PATE is zero even in populations that are only slightly
+different from the experimental sample. In contrast, if the population
+with the zero T-PATE has distinct means of covariates from those of the
+experimental sample, it shows that causal conclusions are robust to a
+wide range of populations.
+
+In this example, causal effects are robust to changes in many variables
+for about 0.2 \~ 0.3 standard deviations, while it is robust to changes
+in “race” variable for less than 0.1 standard deviations.
 
 Use `plot` to visualize the estimated CATEs and estimated external
 robustness.

@@ -101,3 +101,23 @@ var_IPW <- function(Y, Tr, ps, w){
   var_i <- var(score*w)/length(Y)
   return(var_i)
 }
+
+weighted.sd <- function(x, w){
+  xm <- weighted.mean(x = x, w = w)
+  w_use <- w/mean(w)
+  w_sd  <- sqrt(mean(w_use *(x - xm)^2))
+  return(w_sd)
+}
+
+cov_profile <- function(X, w_use, digits){
+  mean_exp <- apply(X, 2, function(x) mean(x))
+  mean_pop <- apply(X, 2,function(x) weighted.mean(x, w = w_use))
+  sd_exp <- apply(X, 2, function(x) sd(x))
+  sd_pop <- apply(X, 2,function(x) weighted.sd(x, w = w_use))
+  std_diff <- (mean_exp - mean_pop)/sd_exp
+  tab_X_orig <- tab_X <- cbind(mean_exp, sd_exp, mean_pop, sd_pop, std_diff)
+  tab_X <- as.data.frame(round(tab_X, digits = digits))
+  tab_X <- cbind(tab_X[,1:2], " ", tab_X[,3:4], " ", tab_X[,5])
+  colnames(tab_X) <- c("Exp:Mean", "Exp:SD", "", "Pop*:Mean", "Pop*:SD","", "Std. Diff")
+  return(list("tab_X" = tab_X, "tab_X_orig" = tab_X_orig))
+}
