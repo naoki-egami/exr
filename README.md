@@ -174,16 +174,16 @@ In this example, external robustness is 0.35 and is moderate (between
 two benchmarks 0.14 and 0.57).
 
 The covariate profiles provide further intuitive understanding. The
-first four columns show the means and standard devariations of
-covariates in the experimental sample and in the population with the
-T-PATE equal to zero. The last column shows the standardized difference
-in means of covariates. If the population with the zero T-PATE has
-similar means of covariates to those of the experimental sample, this
-shows that the T-PATE is zero even in populations that are only slightly
-different from the experimental sample. In contrast, if the population
-with the zero T-PATE has distinct means of covariates from those of the
-experimental sample, it shows that causal conclusions are robust to a
-wide range of populations.
+first four columns show the means and standard deviation of covariates
+in the experimental sample and in the population with the T-PATE equal
+to zero. The last column shows the standardized difference in means of
+covariates. If the population with the zero T-PATE has similar means of
+covariates to those of the experimental sample, this shows that the
+T-PATE is zero even in populations that are only slightly different from
+the experimental sample. In contrast, if the population with the zero
+T-PATE has distinct means of covariates from those of the experimental
+sample, it shows that causal conclusions are robust to a wide range of
+populations.
 
 In this example, causal effects are robust to changes in many variables
 for about 0.2 \~ 0.3 standard deviations, while it is robust to changes
@@ -219,7 +219,7 @@ xtable(exr_out)
 ```
 
     ## % latex table generated in R 4.0.2 by xtable 1.8-4 package
-    ## % Sun Oct 23 21:08:44 2022
+    ## % Sun Oct 23 21:37:35 2022
     ## \begin{table}[ht]
     ## \centering
     ## \begin{tabular}{l||c|c||c}
