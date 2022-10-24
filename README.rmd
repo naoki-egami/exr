@@ -108,3 +108,16 @@ When `uncertainty = TRUE`, we visualize the distribution of CATEs that are shift
 ```{r eval = TRUE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align="center"}
 plot(exr_out, uncertainty = TRUE)
 ```
+
+### Export Outputs for Papers
+We can export the covariate profiles using `xtable` as the LaTeX output.
+```{r eval = TRUE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align="center"}
+xtable(exr_out)
+```
+
+We can also export the PDF of the plot as follows.
+```{r eval = FALSE, echo = TRUE, tidy=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.align="center"}
+pdf("figure.pdf")
+plot(exr_out)
+dev.off()
+```

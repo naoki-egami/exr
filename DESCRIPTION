@@ -7,7 +7,7 @@ Description: R package exr estimates  a measure of external robustness (ranges f
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Depends:
     R (>= 3.5.0)
 Imports:
@@ -18,7 +18,8 @@ Imports:
     furrr,
     future,
     future.apply,
-    progressr
+    progressr,
+    xtable
 Suggests: 
     rmarkdown,
     knitr

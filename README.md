@@ -209,3 +209,46 @@ plot(exr_out, uncertainty = TRUE)
 ```
 
 <img src="README_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+
+### Export Outputs for Papers
+
+We can export the covariate profiles using `xtable` as the LaTeX output.
+
+``` r
+xtable(exr_out)
+```
+
+    ## % latex table generated in R 4.0.2 by xtable 1.8-4 package
+    ## % Sun Oct 23 21:08:44 2022
+    ## \begin{table}[ht]
+    ## \centering
+    ## \begin{tabular}{l||c|c||c}
+    ##    & Experimental & Population with & Standardized \\ 
+    ##    & Sample & T-PATE = 0 & Difference \\ 
+    ##    \hline
+    ## age & 24.52 & 22.99 & 0.23 \\ 
+    ##    & (6.63) & (6.35) &  \\ 
+    ##   educ & 10.27 & 9.81 & 0.27 \\ 
+    ##    & (1.7) & (1.69) &  \\ 
+    ##   black1 & 0.8 & 0.79 & 0.02 \\ 
+    ##    & (0.4) & (0.41) &  \\ 
+    ##   hisp1 & 0.11 & 0.12 & -0.04 \\ 
+    ##    & (0.31) & (0.32) &  \\ 
+    ##   marr1 & 0.16 & 0.1 & 0.16 \\ 
+    ##    & (0.37) & (0.3) &  \\ 
+    ##   nodegr1 & 0.78 & 0.84 & -0.14 \\ 
+    ##    & (0.41) & (0.37) &  \\ 
+    ##   log.re75 & 4.78 & 4.15 & 0.16 \\ 
+    ##    & (4.01) & (4.11) &  \\ 
+    ##   u751 & 0.4 & 0.48 & -0.17 \\ 
+    ##    & (0.49) & (0.5) &  \\ 
+    ##   \end{tabular}
+    ## \end{table}
+
+We can also export the PDF of the plot as follows.
+
+``` r
+pdf("figure.pdf")
+plot(exr_out)
+dev.off()
+```
