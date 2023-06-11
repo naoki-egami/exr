@@ -114,10 +114,10 @@ exr_W_dual <- function(score,
           seed_use <- seed + i
           set.seed(seed_use)
           suppressWarnings(res <- solve(p, verbose = verbose, solver = "SCS"))
-          if(res$status == "optimal") break
+          if((res$status == "optimal" | res$status == "optimal_inaccurate")) break
         }
       }
-      if(res$status != "optimal"){
+      if((res$status == "optimal" | res$status == "optimal_inaccurate") == FALSE){
         feasible <- FALSE
         est_w_combined <- est_w <- NULL
         stop(" Optimization fails. Please check data structure. ")
