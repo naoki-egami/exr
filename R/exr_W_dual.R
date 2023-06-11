@@ -3,6 +3,8 @@ exr_W_dual <- function(score,
                        threshold = 0, sign = 1, loss = "raking", cut = -0.01,
                        verbose = FALSE, tolerance = 1e-05, solver = "ECOS", seed = 1234){
 
+  seed_use <- seed
+
   # check feasibility
   feasible <- TRUE
   if(sign == 1){
@@ -99,7 +101,6 @@ exr_W_dual <- function(score,
     # Phi_R <- Maximize(f1%*%lambda + quad_form(lambda, f2))
     # Phi_R <- Maximize(f1%*%lambda + t(lambda)%*%f2%*%lambda)
 
-    seed_use <- seed
     set.seed(seed_use)
     p <- Problem(Phi_R, constraints)
     suppressWarnings(res <- solve(p, verbose = verbose, solver = solver))
