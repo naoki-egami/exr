@@ -1,7 +1,7 @@
 exr_W_dual <- function(score,
                        const_list = NULL, X = NULL,
                        threshold = 0, sign = 1, loss = "raking", cut = -0.01,
-                       verbose = FALSE, tolerance = 1e-05, solver = "ECOS"){
+                       verbose = FALSE, tolerance = 1e-05, solver = "ECOS", seed = 1234){
 
   # check feasibility
   feasible <- TRUE
@@ -99,16 +99,28 @@ exr_W_dual <- function(score,
     # Phi_R <- Maximize(f1%*%lambda + quad_form(lambda, f2))
     # Phi_R <- Maximize(f1%*%lambda + t(lambda)%*%f2%*%lambda)
 
-
+    seed_use <- seed
+    set.seed(seed_use)
     p <- Problem(Phi_R, constraints)
     suppressWarnings(res <- solve(p, verbose = verbose, solver = solver))
+
     if(res$status == "solver_error"){
       # re-run the code with different solver.
       suppressWarnings(res <- solve(p, verbose = verbose, solver = "SCS"))
+
+      # Try with 5 different seeds
+      if(res$status != "optimal"){
+        for(i in 1:5){
+          seed_use <- seed + i
+          set.seed(seed_use)
+          suppressWarnings(res <- solve(p, verbose = verbose, solver = "SCS"))
+          if(res$status == "optimal") break
+        }
+      }
       if(res$status != "optimal"){
         feasible <- FALSE
         est_w_combined <- est_w <- NULL
-        stop(" Optimization fails. Please run `exr` again with different seed. ")
+        stop(" Optimization fails. Please check data structure. ")
       }
     }
     if(feasible == TRUE){
@@ -128,5 +140,5 @@ exr_W_dual <- function(score,
   if(is.null(est_w)){
     feasible <- FALSE
   }
-  return(list("est_w" = est_w, "est_w_combined" = est_w_combined, "orig_w" = orig_w, "feasible" = feasible))
+  return(list("est_w" = est_w, "est_w_combined" = est_w_combined, "orig_w" = orig_w, "feasible" = feasible, "seed" = seed_use))
 }

@@ -61,12 +61,14 @@ exr_base <- function(Y, Tr, X,
       cat("\nEstimating External Robustness...\n")
     }
 
+    seed_use <- seed
     if(dual == TRUE){
       w_out <- exr_W_dual(score = tau,
                           const_list = const_list, X = X,
                           threshold = threshold, sign = sign, loss = loss, cut = cut,
                           verbose = verbose, tolerance = tolerance,
-                          solver = solver)
+                          solver = solver, seed = seed)
+      seed_use <- w_out$seed_use
     }else{
       suppressWarnings(w_out <- exr_W(score = tau,
                                       const_list = const_list, X = X,
@@ -143,7 +145,8 @@ exr_base <- function(Y, Tr, X,
                                 cut = cut,
                                 verbose = verbose,
                                 tolerance = tolerance,
-                                solver = solver)
+                                solver = solver,
+                                seed = seed)
       }else{
         suppressWarnings(w_unc_out <- exr_W(score = tau,
                                             const_list = const_list, X = X,
